@@ -31,6 +31,22 @@ Low-cleric groups tasks into batches based on order (a.k.a rank). If two tasks a
 
 A batch is a group of tasks, tasks are often grouped into hierarchies and other constructs such as features, stories, epics, sagas, tasks, spikes, etc. These clash a little because you might be working on a small random feature at the same time as a long-living epic, and you are not really working on these sequentially but in parallel. Coupling the lead-time calculation of the small feature with the entirety of the batch isn't useful. As we've determined earlier, the task for the small feature should therefore be part of the same batch as _some_ of the tasks of the epic. The keyword is _some_. Large features (epics, sagas) are often (they should be) decomposed into smaller sets of features. These should be ordered accordingly. In this case, the "order" of the epic is irrelevant, what matters is the order of all the subfeatures. A decomposition into features that are in the same order of magnitude of effort is essential to give significant estimates. If an epic is _weeks_, its features are _days_, then these can be ordered and intermingled with other unrelated features. Lead-time can then be calculated at the feature level, and consolidated at an epic level. 
 
+For example, we might have
+
+| Epic 1             | Epic 2             | Rando-feature 1      |
+| ------------------ | ------------------ | -------------------- |
+| Task a - order: 10 | Task a - order: 10 | Feature 1 - order 15 |
+| Task b - order: 10 | Task b - order: 15 |                      |
+| Task c - order: 15 | Task c - order: 15 |                      |
+| Task d - order: 15 | Task d - order: 20 |                      |
+
+This will give three batches:
+- 10: Epic1.taskA, Epic1.taskB, Epic2.taskA
+- 15: Epic1.taskC, Epic1.taskD, Epic2.taskB, Epic2.taskC, Rando feature
+- 20: Epic2.taskD
+
+Which means the lead time for Epic 1 and Rando-feature 1 will be the same.
+
 This allows to keep granularity for what needs it, to calculate complex dates with intermingled features and releases conflicting for resources, give final delivery forecast for the epic, and provide forecasts for intermediary milestones (not that reporting on the latter should be of any significance, but life is such that sometimes some managers will ask you this, might as well be able to provide an answer and get back to work).
 
 What is the lead time for an epic? The largest lead-time for its components.
