@@ -5,11 +5,11 @@ import { ILeadTimeConfiguration, LeadTimeCalculator } from "../src/LeadTimeCalcu
 describe("Lead Time Calculator", () => {
   it("calculates lead time for a series of batches", () => {
     // given
-    const batch1: IBatch = { points: 100 };
-    const batch2: IBatch = { points: 200 };
-    const batch3: IBatch = { points: 400 };
+    const batch1: IBatch = { unitsOfWork: 100 };
+    const batch2: IBatch = { unitsOfWork: 200 };
+    const batch3: IBatch = { unitsOfWork: 400 };
 
-    const config: ILeadTimeConfiguration = { daysPerPoint: .1 }
+    const config: ILeadTimeConfiguration = { daysPerUnitOfWork: .1 }
     const calculator = new LeadTimeCalculator(config);
 
     // when

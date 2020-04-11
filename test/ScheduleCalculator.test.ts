@@ -5,13 +5,13 @@ import { ScheduleCalculator, EnumMonth } from "../src/ScheduleCalculator"
 
 describe("Schedule", () => {
   // given
-  const batch1: IBatch = { points: 1 }
+  const batch1: IBatch = { unitsOfWork: 1 }
   const leadTime1: ILeadTime = { leadTimeInDays: 5, batch: batch1 }
-  const batch2: IBatch = { points: 2 }
+  const batch2: IBatch = { unitsOfWork: 2 }
   const leadTime2: ILeadTime = { leadTimeInDays: 10, batch: batch2 }
-  const batch3: IBatch = { points: 3 }
+  const batch3: IBatch = { unitsOfWork: 3 }
   const leadTime3: ILeadTime = { leadTimeInDays: 12, batch: batch3 }
-  const batch4: IBatch = { points: 3 }
+  const batch4: IBatch = { unitsOfWork: 3 }
   const leadTime4: ILeadTime = { leadTimeInDays: 20, batch: batch4 }
   const calculator = new ScheduleCalculator({ holidays: [{ day: 4, month: EnumMonth.May }] })
 

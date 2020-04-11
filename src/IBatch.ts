@@ -1,3 +1,3 @@
 export interface IBatch {
-  points: number
+  unitsOfWork: number
 }

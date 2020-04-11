@@ -2,14 +2,14 @@ import { IBatch } from "./IBatch";
 import { ILeadTime } from "./ILeadTime";
 
 export interface ILeadTimeConfiguration {
-  daysPerPoint: number
+  daysPerUnitOfWork: number
 }
 
 export class LeadTimeCalculator {
   constructor(private configuration: ILeadTimeConfiguration) { }
 
   private calculateLeadTimeInDaysForBatch(batch: IBatch): number {
-    return batch.points * this.configuration.daysPerPoint;
+    return batch.unitsOfWork * this.configuration.daysPerUnitOfWork;
   }
 
   private calculateLeadTimeRec([batch, ...batches]: IBatch[], baseLeadTimeInDays: number = 0): ILeadTime[] {
