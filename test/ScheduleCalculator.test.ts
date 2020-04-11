@@ -13,10 +13,12 @@ describe("Schedule", () => {
   const leadTime3: ILeadTime = { leadTimeInDays: 12, batch: batch3 }
   const batch4: IBatch = { unitsOfWork: 3 }
   const leadTime4: ILeadTime = { leadTimeInDays: 20, batch: batch4 }
+  const batch5: IBatch = { unitsOfWork: .1 }
+  const leadTime5: ILeadTime = { leadTimeInDays: 20.1, batch: batch5 }
   const calculator = new ScheduleCalculator({ holidays: [{ day: 4, month: EnumMonth.May }] })
 
   // when
-  const schedule = calculator.calculateSchedule([leadTime1, leadTime2, leadTime3, leadTime4], new Date(2020, 3, 6, 1));
+  const schedule = calculator.calculateSchedule([leadTime1, leadTime2, leadTime3, leadTime4, leadTime5], new Date(2020, 3, 6, 1));
 
   // then
   it("skips weekends", () => {
@@ -35,5 +37,11 @@ describe("Schedule", () => {
     should(schedule[3].batch).eql(batch4)
     should(schedule[3].leadTime).eql(leadTime4)
     should(schedule[3].scheduledDate).eql(new Date(2020, 4, 5, 1))
+  })
+
+  it("rounds portions of days up", () => {
+    should(schedule[4].batch).eql(batch5)
+    should(schedule[4].leadTime).eql(leadTime5)
+    should(schedule[4].scheduledDate).eql(new Date(2020, 4, 6, 1))
   })
 })
