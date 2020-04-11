@@ -5,9 +5,9 @@ import { ILeadTimeConfiguration, LeadTimeCalculator } from "../src/LeadTimeCalcu
 describe("Lead Time Calculator", () => {
   it("calculates lead time for a series of batches", () => {
     // given
-    const batch1: IBatch = { unitsOfWork: 100 };
-    const batch2: IBatch = { unitsOfWork: 200 };
-    const batch3: IBatch = { unitsOfWork: 400 };
+    const batch1: IBatch = { unitsOfWork: 100, tasks: [] };
+    const batch2: IBatch = { unitsOfWork: 200, tasks: [] };
+    const batch3: IBatch = { unitsOfWork: 400, tasks: [] };
 
     const config: ILeadTimeConfiguration = { daysPerUnitOfWork: .1 }
     const calculator = new LeadTimeCalculator(config);

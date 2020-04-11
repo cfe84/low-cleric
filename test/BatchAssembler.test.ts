@@ -28,11 +28,15 @@ describe("Batch assembler", () => {
     it("orders tasks within a batch, and ignores parent task order for subtasks", () => {
       should(batches).have.length(4)
       should(batches[0].unitsOfWork).equal(25);
+      should(batches[0].tasks).containDeep([task1_1, task1_2, epic1])
       should(batches[1].unitsOfWork).equal(3);
+      should(batches[1].tasks).containDeep([task1_3])
     })
     it("should include units of work of epics by default", () => {
       should(batches[2].unitsOfWork).equal(2);
+      should(batches[2].tasks).containDeep([epic2])
       should(batches[3].unitsOfWork).equal(4);
+      should(batches[3].tasks).containDeep([task2_1])
     })
   });
 
@@ -54,6 +58,7 @@ describe("Batch assembler", () => {
     it("should discard parent estimate", () => {
       should(batches).have.length(1)
       should(batches[0].unitsOfWork).equal(25);
+      should(batches[0].tasks).containDeep([task1_1, task1_2]);
     })
   })
 })

@@ -1,3 +1,6 @@
+import { ITask } from "./ITask";
+
 export interface IBatch {
-  unitsOfWork: number
+  unitsOfWork: number,
+  tasks: ITask[]
 }
