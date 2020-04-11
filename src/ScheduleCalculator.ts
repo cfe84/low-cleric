@@ -48,6 +48,7 @@ export class ScheduleCalculator {
   private isWeekend = (date: Date) =>
     this.weekend.indexOf(date.getDay()) >= 0
 
+  // todo: use caching and trade memory for speed by saving pre-calculated intervals rather than re-doing it for each task
   private calculateIntervalDate(from: Date, intervalInDays: number): Date {
     const res = new Date(from);
     while (intervalInDays > 0) {
