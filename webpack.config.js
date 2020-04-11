@@ -4,7 +4,9 @@ module.exports = {
   entry: './src/app.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'law-cleric.js',
+    filename: 'low-cleric.js',
+    library: "lowCleric",
+    libraryTarget: "umd"
   },
   module: {
     rules: [
