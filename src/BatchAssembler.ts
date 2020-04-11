@@ -2,7 +2,7 @@ import { IBatch } from "./IBatch";
 import { ITask } from "./ITask";
 
 export interface IBatchAssemblerConfiguration {
-
+  discardParentEstimate?: boolean;
 }
 
 export class BatchAssembler {
@@ -10,9 +10,11 @@ export class BatchAssembler {
 
   public assembleBatchesRec(tasks: ITask[], accumulator: IBatch[]): IBatch[] {
     tasks.forEach((task) => {
-      if (task.subTasks && task.subTasks.length) {
-        accumulator = this.assembleBatchesRec(task.subTasks, accumulator);
-      } else {
+      const isParent = task.subTasks && task.subTasks.length;
+      if (isParent) {
+        accumulator = this.assembleBatchesRec(task.subTasks as ITask[], accumulator);
+      }
+      if (!isParent || !this.configuration.discardParentEstimate) {
         if (!accumulator[task.order]) {
           accumulator[task.order] = { unitsOfWork: 0 }
         }
