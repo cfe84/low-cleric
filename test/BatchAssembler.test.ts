@@ -5,7 +5,7 @@ import should from "should"
 describe("Batch assembler", () => {
   context("Default", () => {
     // given
-    const task1_1: ITask = { order: 10, unitsOfWork: 10 }
+    const task1_1: ITask = { order: 10, unitsOfWork: 10, estimateUncertainty: .5 }
     const task1_2: ITask = { order: 10, unitsOfWork: 15 }
     const task1_3: ITask = { order: 15, unitsOfWork: 3 }
     const task2_1: ITask = { order: 20, unitsOfWork: 4 }
@@ -37,6 +37,10 @@ describe("Batch assembler", () => {
       should(batches[2].tasks).containDeep([epic2])
       should(batches[3].unitsOfWork).equal(4);
       should(batches[3].tasks).containDeep([task2_1])
+    })
+    it("calculates uncertainty", () => {
+      should(batches[0].estimateUncertainty).equal(5)
+      should(batches[0].estimateUncertaintyIndex).equal(.2)
     })
   });
 

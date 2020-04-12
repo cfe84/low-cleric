@@ -16,12 +16,12 @@ export class LeadTimeCalculator {
     if (batch === undefined) {
       return []
     } else {
-      const leadTimeInDays = this.calculateLeadTimeInDaysForBatch(batch) + leadTimeToStartInDays;
+      const leadTimeToFinishInDays = this.calculateLeadTimeInDaysForBatch(batch) + leadTimeToStartInDays;
       return [{
         batch,
         leadTimeToStartInDays,
-        leadTimeInDays
-      }].concat(this.calculateLeadTimeRec(batches, leadTimeInDays))
+        leadTimeToFinishInDays
+      }].concat(this.calculateLeadTimeRec(batches, leadTimeToFinishInDays))
     }
   }
 

@@ -65,7 +65,7 @@ export class ScheduleCalculator {
       return []
     } else {
       const scheduledStartDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToStartInDays);
-      const scheduledFinishDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeInDays);
+      const scheduledFinishDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToFinishInDays);
       const scheduledBatch: IScheduledBatch = { batch: leadTime.batch, leadTime, scheduledStartDate, scheduledFinishDate };
       return [scheduledBatch]
         .concat(this.calculateSchedule(leadtimes, startingFrom))
