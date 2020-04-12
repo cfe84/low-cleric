@@ -8,7 +8,7 @@ export interface IBatchAssemblerConfiguration {
 export class BatchAssembler {
   constructor(private configuration: IBatchAssemblerConfiguration) { }
 
-  public assembleBatchesRec(tasks: ITask[], accumulator: IBatch[]): IBatch[] {
+  private assembleBatchesRec(tasks: ITask[], accumulator: IBatch[]): IBatch[] {
     tasks.forEach((task) => {
       const isParent = task.subTasks && task.subTasks.length;
       if (!isParent || !this.configuration.discardParentEstimate) {

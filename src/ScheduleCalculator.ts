@@ -32,14 +32,14 @@ export interface IDayOfTheYear {
 }
 
 export interface IScheduleConfiguration {
-  weekendDaysOfTheWeek?: EnumDayOfTheWeek[],
+  weekend?: EnumDayOfTheWeek[],
   holidays: IDayOfTheYear[]
 }
 
 export class ScheduleCalculator {
   private weekend: EnumDayOfTheWeek[];
   constructor(private configuration: IScheduleConfiguration) {
-    this.weekend = configuration.weekendDaysOfTheWeek || [EnumDayOfTheWeek.Saturday, EnumDayOfTheWeek.Sunday]
+    this.weekend = configuration.weekend || [EnumDayOfTheWeek.Saturday, EnumDayOfTheWeek.Sunday]
   }
 
   private isHoliday = (date: Date) =>
