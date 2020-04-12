@@ -4,5 +4,6 @@ import { ILeadTime } from "./ILeadTime";
 export interface IScheduledBatch {
   batch: IBatch,
   leadTime: ILeadTime,
-  scheduledDate: Date
+  scheduledFinishDate: Date,
+  scheduledStartDate: Date
 }

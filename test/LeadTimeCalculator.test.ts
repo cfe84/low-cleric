@@ -17,10 +17,13 @@ describe("Lead Time Calculator", () => {
 
     // then
     should(leadTime[0].batch).eql(batch1);
+    should(leadTime[0].leadTimeToStartInDays).eql(0);
     should(leadTime[0].leadTimeInDays).eql(10);
     should(leadTime[1].batch).eql(batch2);
+    should(leadTime[1].leadTimeToStartInDays).eql(10);
     should(leadTime[1].leadTimeInDays).eql(30);
     should(leadTime[2].batch).eql(batch3);
+    should(leadTime[2].leadTimeToStartInDays).eql(30);
     should(leadTime[2].leadTimeInDays).eql(70);
 
   })

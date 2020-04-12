@@ -12,13 +12,14 @@ export class LeadTimeCalculator {
     return batch.unitsOfWork * this.configuration.daysPerUnitOfWork;
   }
 
-  private calculateLeadTimeRec([batch, ...batches]: IBatch[], baseLeadTimeInDays: number = 0): ILeadTime[] {
+  private calculateLeadTimeRec([batch, ...batches]: IBatch[], leadTimeToStartInDays: number = 0): ILeadTime[] {
     if (batch === undefined) {
       return []
     } else {
-      const leadTimeInDays = this.calculateLeadTimeInDaysForBatch(batch) + baseLeadTimeInDays;
+      const leadTimeInDays = this.calculateLeadTimeInDaysForBatch(batch) + leadTimeToStartInDays;
       return [{
         batch,
+        leadTimeToStartInDays,
         leadTimeInDays
       }].concat(this.calculateLeadTimeRec(batches, leadTimeInDays))
     }

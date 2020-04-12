@@ -1,4 +1,4 @@
-This is made for people who are getting tired to get asked "when is X going to be ready". It takes a semi-structure, semi-ordered pipeline and some form of a velocity, and yields lead-times for each bits of the pipeline.
+This is made for people who want to automate the answer to "when is X going to be ready". It takes a semi-structure, semi-ordered pipeline and some form of a velocity, and yields lead-times for each bits of the pipeline.
 
 In other words, you give it a pipeline with ordered and estimated things (epics, tasks, features, stories - whatever you call these) and a "velocity", and this spits you lead-time and expected date for each of the things in your backlog.
 
@@ -11,7 +11,7 @@ This tool work on two main assumptions:
 
 Overall, this tool is using how much time is required _on average_ by a software team to output a unit of work. Say that you are outputting 10 stories per week on average, and these stories each weigh 10 units of work, then the team is outputting 100 units of work per 5 days, i.e. a unit of work is worth 5 days / 100 = .05 days. This means that, if 100 units of work are sitting in front of a task, it should on average wait 5 days before it gets started. If the task itself is worth 100 units of work, it should on average take 5 days to be processed. Thusly, you can roughly expect the task to take 10 days.
 
-This is a very rough estimate, but it roots itself into the [law of large numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers).
+The output is a forecast: it is rough and not precise, but it roots itself into the [law of large numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers) and its results should bear some truth.
 
 ## Unit of work
 

@@ -6,15 +6,15 @@ import { ScheduleCalculator, EnumMonth } from "../src/ScheduleCalculator"
 describe("Schedule", () => {
   // given
   const batch1: IBatch = { unitsOfWork: 1, tasks: [] }
-  const leadTime1: ILeadTime = { leadTimeInDays: 5, batch: batch1 }
+  const leadTime1: ILeadTime = { leadTimeToStartInDays: 0, leadTimeInDays: 5, batch: batch1 }
   const batch2: IBatch = { unitsOfWork: 2, tasks: [] }
-  const leadTime2: ILeadTime = { leadTimeInDays: 10, batch: batch2 }
+  const leadTime2: ILeadTime = { leadTimeToStartInDays: 5, leadTimeInDays: 10, batch: batch2 }
   const batch3: IBatch = { unitsOfWork: 3, tasks: [] }
-  const leadTime3: ILeadTime = { leadTimeInDays: 12, batch: batch3 }
+  const leadTime3: ILeadTime = { leadTimeToStartInDays: 10, leadTimeInDays: 12, batch: batch3 }
   const batch4: IBatch = { unitsOfWork: 3, tasks: [] }
-  const leadTime4: ILeadTime = { leadTimeInDays: 20, batch: batch4 }
+  const leadTime4: ILeadTime = { leadTimeToStartInDays: 12, leadTimeInDays: 20, batch: batch4 }
   const batch5: IBatch = { unitsOfWork: .1, tasks: [] }
-  const leadTime5: ILeadTime = { leadTimeInDays: 20.1, batch: batch5 }
+  const leadTime5: ILeadTime = { leadTimeToStartInDays: 20, leadTimeInDays: 20.1, batch: batch5 }
   const calculator = new ScheduleCalculator({ holidays: [{ day: 4, month: EnumMonth.May }] })
 
   // when
@@ -24,24 +24,29 @@ describe("Schedule", () => {
   it("skips weekends", () => {
     should(schedule[0].batch).eql(batch1)
     should(schedule[0].leadTime).eql(leadTime1)
-    should(schedule[0].scheduledDate).eql(new Date(2020, 3, 13, 1))
+    should(schedule[0].scheduledStartDate).eql(new Date(2020, 3, 6, 1))
+    should(schedule[0].scheduledFinishDate).eql(new Date(2020, 3, 13, 1))
     should(schedule[1].batch).eql(batch2)
     should(schedule[1].leadTime).eql(leadTime2)
-    should(schedule[1].scheduledDate).eql(new Date(2020, 3, 20, 1))
+    should(schedule[1].scheduledStartDate).eql(new Date(2020, 3, 13, 1))
+    should(schedule[1].scheduledFinishDate).eql(new Date(2020, 3, 20, 1))
     should(schedule[2].batch).eql(batch3)
     should(schedule[2].leadTime).eql(leadTime3)
-    should(schedule[2].scheduledDate).eql(new Date(2020, 3, 22, 1))
+    should(schedule[2].scheduledStartDate).eql(new Date(2020, 3, 20, 1))
+    should(schedule[2].scheduledFinishDate).eql(new Date(2020, 3, 22, 1))
   })
 
   it("skips holidays", () => {
     should(schedule[3].batch).eql(batch4)
     should(schedule[3].leadTime).eql(leadTime4)
-    should(schedule[3].scheduledDate).eql(new Date(2020, 4, 5, 1))
+    should(schedule[3].scheduledStartDate).eql(new Date(2020, 3, 22, 1))
+    should(schedule[3].scheduledFinishDate).eql(new Date(2020, 4, 5, 1))
   })
 
   it("rounds portions of days up", () => {
     should(schedule[4].batch).eql(batch5)
     should(schedule[4].leadTime).eql(leadTime5)
-    should(schedule[4].scheduledDate).eql(new Date(2020, 4, 6, 1))
+    should(schedule[4].scheduledStartDate).eql(new Date(2020, 4, 5, 1))
+    should(schedule[4].scheduledFinishDate).eql(new Date(2020, 4, 6, 1))
   })
 })
