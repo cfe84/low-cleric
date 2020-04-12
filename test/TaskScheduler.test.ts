@@ -45,12 +45,14 @@ describe("Task scheduler", () => {
     should(scheduledTasks[0].finishDate).eql(scheduledBatch2.scheduledFinishDate);
     should(scheduledTasks[0].leadTimeToStartInDays).eql(leadTime1.leadTimeToStartInDays);
     should(scheduledTasks[0].leadTimeToFinishInDays).eql(leadTime2.leadTimeInDays);
+    should(scheduledTasks[0].subtasks).have.lengthOf(3);
 
     should(scheduledTasks[2].task).eql(epic2);
     should(scheduledTasks[2].startDate).eql(scheduledBatch3.scheduledStartDate);
     should(scheduledTasks[2].finishDate).eql(scheduledBatch3.scheduledFinishDate);
     should(scheduledTasks[2].leadTimeToStartInDays).eql(leadTime3.leadTimeToStartInDays);
     should(scheduledTasks[2].leadTimeToFinishInDays).eql(leadTime3.leadTimeInDays);
+    should(scheduledTasks[2].subtasks).have.lengthOf(1);
   })
   it("Gets simple tasks", () => {
     should(scheduledTasks[1].task).eql(task3);
@@ -65,5 +67,8 @@ describe("Task scheduler", () => {
     should(scheduledTasks[3].finishDate).eql(scheduledBatch3.scheduledFinishDate);
     should(scheduledTasks[3].leadTimeToStartInDays).eql(leadTime2.leadTimeToStartInDays);
     should(scheduledTasks[3].leadTimeToFinishInDays).eql(leadTime3.leadTimeInDays);
+    should(scheduledTasks[3].subtasks).have.lengthOf(2);
+    should((scheduledTasks[3].subtasks || [])[0].subtasks).have.lengthOf(1);
+    should((scheduledTasks[3].subtasks || [])[1].subtasks).be.undefined();
   })
 })

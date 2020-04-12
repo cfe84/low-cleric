@@ -1,13 +1,18 @@
-This is made for people who want to automate the answer to "when is X going to be ready". It takes a semi-structure, semi-ordered pipeline and some form of a velocity, and yields lead-times for each bits of the pipeline.
+This is made for people who want to automate the answer to "when is X going to be ready". It takes a semi-structured, semi-ordered pipeline and some form of a velocity, and yields lead-times for each bits of the pipeline.
 
-In other words, you give it a pipeline with ordered and estimated things (epics, tasks, features, stories - whatever you call these) and a "velocity", and this spits you lead-time and expected date for each of the things in your backlog.
+In other words, it takes the following inputs:
+- A list of tasks with associated "units of work" (points, ideal days, ...). Each task can have subtasks, which can have a different order. __Order is absolute__ which means that if story 1 is order 1 and has two subtasks 1.a with order 2 and 1.b with order 4, and story 2 is order 2 and has two subtasks 2.a with order 1 and 2.b with order 3: order will be 2.a, 1.a, 2.b, 1.b - therefore story 2 will be scheduled to start and complete before story 1 because all its subtasks will be started and completed before story 1.
+- A "velocity" in days per unit of work (see below).
+
+The output is a lead-time to start and finish, and expected date to start and finish each of the things in your backlog.
 
 # Concepts
 
-This tool work on two main assumptions:
+This tool work on three main assumptions:
 
 1. Considering that your backlog is acting like a serialized queue, which means that the items sitting in the queue are ordered in the way you want them to be processed
 2. That the software team is operating like a blackbox production unit, which means that on average it will process the items in a roughly indistinct manner, a unit of work will be a unit of work.
+3. That you release what you build immediately. If not, round up the date to whatever the release cycle is.
 
 Overall, this tool is using how much time is required _on average_ by a software team to output a unit of work. Say that you are outputting 10 stories per week on average, and these stories each weigh 10 units of work, then the team is outputting 100 units of work per 5 days, i.e. a unit of work is worth 5 days / 100 = .05 days. This means that, if 100 units of work are sitting in front of a task, it should on average wait 5 days before it gets started. If the task itself is worth 100 units of work, it should on average take 5 days to be processed. Thusly, you can roughly expect the task to take 10 days.
 
@@ -85,19 +90,20 @@ Uncertainty gets reported in two ways:
 - a combined index which relates uncertainty based on composition (uncertainty of tasks within a batch) and on sequencing (uncertainty of preceding batches)
 - a calculated potential drift which combines the best case scenario, and the worst case scenario. In practice those are hard to communicate because the dates they yield give the impression that they are imprecise, which they are for a good reason, and the reality of software is that uncertainty is a certainty, and having to admit the truth of variability is harder than ignoring it and pretending we know what we're doing.
 
+## Accuracy and precision
+
+This tool is very precise, but accuracy will vary with how good your estimates are, and your measurement of "velocity" is. Since neither is either perfect, accuracy is a problem. Ironically, given the law of large numbers, the further a task is in the backlog, the more "accurate" the result should be.
+
+The point being, this is a forecasting tool, it helps managing the backlog and answering questions, but by no means does it make software development a more predictable process that it really is.
+
 # In practice
 
-Low-cleric provides 3 main interfaces:
+Low-cleric provides an interface which takes tasks and configuration, then schedules the tasks through a pipeline:
 
-- Batch assembly,
-- Lead time calculation,
-- Schedule calculation,
-
-The batch assembly assembles ordered batches based on tasks.
-
-The lead time calculator calculates lead time based on ordered batches.
-
-The schedule calculator calculates dates based on lead times.
+1. The batch assembly assembles ordered batches based on task's individual order (or order of subtasks composing a tasks.).
+2. The lead time calculator calculates lead time for each ordered batch
+3. The schedule calculator calculates dates based on lead times, weekends and holidays.
+4. The tasks scheduler re-consolidates tasks from the batches.
 
 ## How to use
 
