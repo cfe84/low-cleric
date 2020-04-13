@@ -19,14 +19,24 @@ describe("Batch assembler", () => {
       unitsOfWork: 2,
       subTasks: [task2_1]
     }
+    const task3_1: ITask = { unitsOfWork: 77 }
+    const task3_2: ITask = { order: 25, unitsOfWork: 3 }
+    const epic3: ITask = {
+      order: 25,
+      unitsOfWork: 0,
+      subTasks: [task3_1, task3_2]
+    }
     const batchAssembler = new BatchAssembler({});
 
     // when
-    const batches = batchAssembler.assembleBatches([epic1, epic2])
+    const batches = batchAssembler.assembleBatches([epic1, epic2, epic3])
 
     // then
+    it("finds the right number of batchs", () => {
+      should(batches).have.length(5)
+    })
+
     it("orders tasks within a batch, and ignores parent task order for subtasks", () => {
-      should(batches).have.length(4)
       should(batches[0].unitsOfWork).equal(25);
       should(batches[0].tasks).containDeep([task1_1, task1_2, epic1])
       should(batches[1].unitsOfWork).equal(3);
@@ -41,6 +51,11 @@ describe("Batch assembler", () => {
     it("calculates uncertainty", () => {
       should(batches[0].estimateUncertainty).equal(5)
       should(batches[0].estimateUncertaintyIndex).equal(.2)
+    })
+    it("defaults to parent task order if none is specified", () => {
+      should(batches[4].unitsOfWork).equal(80)
+      should(batches[4].tasks).containDeep([epic3, task3_1, task3_2])
+
     })
   });
 

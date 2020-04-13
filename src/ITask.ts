@@ -1,5 +1,5 @@
 export interface ITask {
-  order: number;
+  order?: number;
   unitsOfWork: number;
   estimateUncertainty?: number;
   subTasks?: ITask[];

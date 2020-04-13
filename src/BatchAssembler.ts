@@ -8,28 +8,30 @@ export interface IBatchAssemblerConfiguration {
 export class BatchAssembler {
   constructor(private configuration: IBatchAssemblerConfiguration) { }
 
-  private assembleBatchesRec(tasks: ITask[], accumulator: IBatch[]): IBatch[] {
+  private assembleBatchesRec(tasks: ITask[], accumulator: IBatch[], parentOrder: number): IBatch[] {
     tasks.forEach((task) => {
+      const order = task.order !== undefined ? task.order : parentOrder
       const isParent = task.subTasks && task.subTasks.length;
       if (!isParent || !this.configuration.discardParentEstimate) {
-        if (!accumulator[task.order]) {
-          accumulator[task.order] = { unitsOfWork: 0, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
+        if (!accumulator[order]) {
+          accumulator[order] = { unitsOfWork: 0, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
         }
-        accumulator[task.order].unitsOfWork += task.unitsOfWork;
-        accumulator[task.order].estimateUncertainty = (task.estimateUncertainty || 0) * task.unitsOfWork
-          + (accumulator[task.order].estimateUncertainty || 0);
-        accumulator[task.order].estimateUncertaintyIndex = accumulator[task.order].estimateUncertainty / accumulator[task.order].unitsOfWork;
-        accumulator[task.order].tasks.push(task);
+        const acc = accumulator[order]
+        acc.unitsOfWork += task.unitsOfWork;
+        acc.estimateUncertainty = (task.estimateUncertainty || 0) * task.unitsOfWork
+          + (acc.estimateUncertainty || 0);
+        acc.estimateUncertaintyIndex = acc.estimateUncertainty / acc.unitsOfWork;
+        acc.tasks.push(task);
       }
       if (isParent) {
-        accumulator = this.assembleBatchesRec(task.subTasks as ITask[], accumulator);
+        accumulator = this.assembleBatchesRec(task.subTasks as ITask[], accumulator, order);
       }
     })
     return accumulator;
   }
 
   public assembleBatches(tasks: ITask[]): IBatch[] {
-    const result: IBatch[] = this.assembleBatchesRec(tasks, []);
+    const result: IBatch[] = this.assembleBatchesRec(tasks, [], 0);
     const batches = result
       .filter(res => !!res)
     return batches;
