@@ -1,3 +1,5 @@
+Calculates lead time for a Kanban backlog.
+
 This is made for people who want to automate the answer to "when is X going to be ready". It takes a semi-structured, semi-ordered pipeline and some form of a velocity, and yields lead-times for each bits of the pipeline.
 
 In other words, it takes the following inputs:
@@ -16,12 +18,19 @@ This tool work on three main assumptions:
 
 Overall, this tool is using how much time is required _on average_ by a software team to output a unit of work. Say that you are outputting 10 stories per week on average, and these stories each weigh 10 units of work, then the team is outputting 100 units of work per 5 days, i.e. a unit of work is worth 5 days / 100 = .05 days. This means that, if 100 units of work are sitting in front of a task, it should on average wait 5 days before it gets started. If the task itself is worth 100 units of work, it should on average take 5 days to be processed. Thusly, you can roughly expect the task to take 10 days.
 
-The output is a forecast: it is rough and not precise, but it roots itself into the [law of large numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers) and its results should bear some truth.
+All of this is based on estimates, which have been known for 40 years to be unreliable and hard to improve. The output is a forecast: it is rough and inaccurate, but it roots itself into the [law of large numbers](https://en.wikipedia.org/wiki/Law_of_large_numbers) and by having some consistence in how you estimate and some rigor in how you measure output, errors should cancel out and it _should_ transform some data into some information.
 
-## Unit of work
+## Estimating units of work
 
 A unit of work is something that represents the amount of work required by the software team to build the task. It should be proportional to the time it takes for a single processor (a.k.a. developer, a.k.a. human) to realize it. It can be whatever you want: t-shirt sizes, Fibonacci tables, ideal-days, whatever works for you. As long as a task worth 10 units takes on average twice as long as a task that takes 5, this will work for you.
 
+How you estimate is unimportant to low-cleric. However it needs estimates to somewhat work, therefore you need to estimate. There are many ways to do so, the tool needs the estimate to be proportional to the time it will take to build the task in order to work, though.
+
+A few ways to estimate that are compatible with the tool
+- Ideal days or ideal hours
+- Story points, fibonacci series
+- T-shirt sizes (mapped to fibo series)
+- #noestimates, provided that you make all your tasks / stories roughly the same size.
 
 ## Batch
 
