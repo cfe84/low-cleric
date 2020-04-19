@@ -2,20 +2,22 @@ import should from "should";
 import { ILeadTime } from "../src/ILeadTime"
 import { IBatch } from "../src/IBatch"
 import { ScheduleCalculator, EnumMonth } from "../src/ScheduleCalculator"
+import { ITask } from "../src/ITask";
 
+interface Task extends ITask<Task> { }
 describe("Schedule", () => {
   // given
-  const batch1: IBatch = { unitsOfWork: 1, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
-  const leadTime1: ILeadTime = { leadTimeToStartInDays: 0, leadTimeToFinishInDays: 5, batch: batch1 }
-  const batch2: IBatch = { unitsOfWork: 2, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
-  const leadTime2: ILeadTime = { leadTimeToStartInDays: 5, leadTimeToFinishInDays: 10, batch: batch2 }
-  const batch3: IBatch = { unitsOfWork: 3, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
-  const leadTime3: ILeadTime = { leadTimeToStartInDays: 10, leadTimeToFinishInDays: 12, batch: batch3 }
-  const batch4: IBatch = { unitsOfWork: 3, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
-  const leadTime4: ILeadTime = { leadTimeToStartInDays: 12, leadTimeToFinishInDays: 20, batch: batch4 }
-  const batch5: IBatch = { unitsOfWork: .1, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
-  const leadTime5: ILeadTime = { leadTimeToStartInDays: 20, leadTimeToFinishInDays: 20.1, batch: batch5 }
-  const calculator = new ScheduleCalculator({ holidays: [{ day: 4, month: EnumMonth.May }] })
+  const batch1: IBatch<Task> = { unitsOfWork: 1, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
+  const leadTime1: ILeadTime<Task> = { leadTimeToStartInDays: 0, leadTimeToFinishInDays: 5, batch: batch1 }
+  const batch2: IBatch<Task> = { unitsOfWork: 2, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
+  const leadTime2: ILeadTime<Task> = { leadTimeToStartInDays: 5, leadTimeToFinishInDays: 10, batch: batch2 }
+  const batch3: IBatch<Task> = { unitsOfWork: 3, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
+  const leadTime3: ILeadTime<Task> = { leadTimeToStartInDays: 10, leadTimeToFinishInDays: 12, batch: batch3 }
+  const batch4: IBatch<Task> = { unitsOfWork: 3, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
+  const leadTime4: ILeadTime<Task> = { leadTimeToStartInDays: 12, leadTimeToFinishInDays: 20, batch: batch4 }
+  const batch5: IBatch<Task> = { unitsOfWork: .1, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
+  const leadTime5: ILeadTime<Task> = { leadTimeToStartInDays: 20, leadTimeToFinishInDays: 20.1, batch: batch5 }
+  const calculator = new ScheduleCalculator<Task>({ holidays: [{ day: 4, month: EnumMonth.May }] })
 
   // when
   const schedule = calculator.calculateSchedule([leadTime1, leadTime2, leadTime3, leadTime4, leadTime5], new Date(2020, 3, 6, 1));

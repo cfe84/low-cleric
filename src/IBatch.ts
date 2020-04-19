@@ -1,8 +1,8 @@
 import { ITask } from "./ITask";
 
-export interface IBatch {
+export interface IBatch<T extends ITask<T>> {
   unitsOfWork: number,
   estimateUncertaintyIndex: number,
   estimateUncertainty: number,
-  tasks: ITask[]
+  tasks: T[]
 }

@@ -5,10 +5,10 @@ export interface IBatchAssemblerConfiguration {
   discardParentEstimate?: boolean;
 }
 
-export class BatchAssembler {
+export class BatchAssembler<T extends ITask<T>> {
   constructor(private configuration: IBatchAssemblerConfiguration) { }
 
-  private assembleBatchesRec(tasks: ITask[], accumulator: IBatch[], parentOrder: number): IBatch[] {
+  private assembleBatchesRec(tasks: T[], accumulator: IBatch<T>[], parentOrder: number): IBatch<T>[] {
     tasks.forEach((task) => {
       const order = task.order !== undefined ? task.order : parentOrder
       const isParent = task.subTasks && task.subTasks.length;
@@ -24,14 +24,14 @@ export class BatchAssembler {
         acc.tasks.push(task);
       }
       if (isParent) {
-        accumulator = this.assembleBatchesRec(task.subTasks as ITask[], accumulator, order);
+        accumulator = this.assembleBatchesRec(task.subTasks as T[], accumulator, order);
       }
     })
     return accumulator;
   }
 
-  public assembleBatches(tasks: ITask[]): IBatch[] {
-    const result: IBatch[] = this.assembleBatchesRec(tasks, [], 0);
+  public assembleBatches(tasks: T[]): IBatch<T>[] {
+    const result: IBatch<T>[] = this.assembleBatchesRec(tasks, [], 0);
     const batches = result
       .filter(res => !!res)
     return batches;

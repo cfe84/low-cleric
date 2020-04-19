@@ -2,31 +2,33 @@ import { ITask } from "../src/ITask"
 import { BatchAssembler } from "../src/BatchAssembler"
 import should from "should"
 
+interface Task extends ITask<Task> { }
+
 describe("Batch assembler", () => {
   context("Default", () => {
     // given
-    const task1_1: ITask = { order: 10, unitsOfWork: 10, estimateUncertainty: .5 }
-    const task1_2: ITask = { order: 10, unitsOfWork: 15 }
-    const task1_3: ITask = { order: 15, unitsOfWork: 3 }
-    const task2_1: ITask = { order: 20, unitsOfWork: 4 }
-    const epic1: ITask = {
+    const task1_1: Task = { order: 10, unitsOfWork: 10, estimateUncertainty: .5 }
+    const task1_2: Task = { order: 10, unitsOfWork: 15 }
+    const task1_3: Task = { order: 15, unitsOfWork: 3 }
+    const task2_1: Task = { order: 20, unitsOfWork: 4 }
+    const epic1: Task = {
       order: 10,
       unitsOfWork: 0,
       subTasks: [task1_1, task1_2, task1_3]
     }
-    const epic2: ITask = {
+    const epic2: Task = {
       order: 18,
       unitsOfWork: 2,
       subTasks: [task2_1]
     }
-    const task3_1: ITask = { unitsOfWork: 77 }
-    const task3_2: ITask = { order: 25, unitsOfWork: 3 }
-    const epic3: ITask = {
+    const task3_1: Task = { unitsOfWork: 77 }
+    const task3_2: Task = { order: 25, unitsOfWork: 3 }
+    const epic3: Task = {
       order: 25,
       unitsOfWork: 0,
       subTasks: [task3_1, task3_2]
     }
-    const batchAssembler = new BatchAssembler({});
+    const batchAssembler = new BatchAssembler<Task>({});
 
     // when
     const batches = batchAssembler.assembleBatches([epic1, epic2, epic3])
@@ -61,14 +63,14 @@ describe("Batch assembler", () => {
 
   context("Discard parent estimate", () => {
     // given
-    const task1_1: ITask = { order: 10, unitsOfWork: 10 }
-    const task1_2: ITask = { order: 10, unitsOfWork: 15 }
-    const epic1: ITask = {
+    const task1_1: Task = { order: 10, unitsOfWork: 10 }
+    const task1_2: Task = { order: 10, unitsOfWork: 15 }
+    const epic1: Task = {
       order: 5,
       unitsOfWork: 5,
       subTasks: [task1_1, task1_2]
     }
-    const batchAssembler = new BatchAssembler({ discardParentEstimate: true });
+    const batchAssembler = new BatchAssembler<Task>({ discardParentEstimate: true });
 
     // when
     const batches = batchAssembler.assembleBatches([epic1])

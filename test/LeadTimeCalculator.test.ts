@@ -1,16 +1,18 @@
 import should from "should";
 import { IBatch } from "../src/IBatch"
 import { ILeadTimeConfiguration, LeadTimeCalculator } from "../src/LeadTimeCalculator";
+import { ITask } from "../src/ITask";
 
+interface Task extends ITask<Task> { }
 describe("Lead Time Calculator", () => {
   it("calculates lead time for a series of batches", () => {
     // given
-    const batch1: IBatch = { unitsOfWork: 100, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 };
-    const batch2: IBatch = { unitsOfWork: 200, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 };
-    const batch3: IBatch = { unitsOfWork: 400, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 };
+    const batch1: IBatch<Task> = { unitsOfWork: 100, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 };
+    const batch2: IBatch<Task> = { unitsOfWork: 200, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 };
+    const batch3: IBatch<Task> = { unitsOfWork: 400, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 };
 
     const config: ILeadTimeConfiguration = { daysPerUnitOfWork: .1 }
-    const calculator = new LeadTimeCalculator(config);
+    const calculator = new LeadTimeCalculator<Task>(config);
 
     // when
     const leadTime = calculator.calculateLeadTime([batch1, batch2, batch3]);

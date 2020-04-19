@@ -1,5 +1,6 @@
 import { ILeadTime } from "./ILeadTime";
 import { IScheduledBatch } from "./IScheduledBatch";
+import { ITask } from "./ITask";
 
 export enum EnumDayOfTheWeek {
   Sunday = 0,
@@ -36,7 +37,7 @@ export interface IScheduleConfiguration {
   holidays: IDayOfTheYear[]
 }
 
-export class ScheduleCalculator {
+export class ScheduleCalculator<T extends ITask<T>> {
   private weekend: EnumDayOfTheWeek[];
   constructor(private configuration: IScheduleConfiguration) {
     this.weekend = configuration.weekend || [EnumDayOfTheWeek.Saturday, EnumDayOfTheWeek.Sunday]
@@ -60,13 +61,13 @@ export class ScheduleCalculator {
     return res;
   }
 
-  calculateSchedule([leadTime, ...leadtimes]: ILeadTime[], startingFrom: Date = new Date()): IScheduledBatch[] {
+  calculateSchedule([leadTime, ...leadtimes]: ILeadTime<T>[], startingFrom: Date = new Date()): IScheduledBatch<T>[] {
     if (leadTime === undefined) {
       return []
     } else {
       const scheduledStartDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToStartInDays);
       const scheduledFinishDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToFinishInDays);
-      const scheduledBatch: IScheduledBatch = { batch: leadTime.batch, leadTime, scheduledStartDate, scheduledFinishDate };
+      const scheduledBatch: IScheduledBatch<T> = { batch: leadTime.batch, leadTime, scheduledStartDate, scheduledFinishDate };
       return [scheduledBatch]
         .concat(this.calculateSchedule(leadtimes, startingFrom))
     }

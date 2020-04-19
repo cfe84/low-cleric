@@ -14,25 +14,25 @@ export interface ILowClericConfiguration {
   discardParentEstimate?: boolean
 }
 
-export interface Schedule {
-  scheduledTasks: IScheduledTask[],
-  scheduledBatches: IScheduledBatch[],
-  leadTimes: ILeadTime[],
-  batches: IBatch[],
+export interface Schedule<T extends ITask<T>> {
+  scheduledTasks: IScheduledTask<T>[],
+  scheduledBatches: IScheduledBatch<T>[],
+  leadTimes: ILeadTime<T>[],
+  batches: IBatch<T>[],
 }
 
-export const scheduleTasks = (
-  tasks: ITask[],
+export const scheduleTasks = <T extends ITask<T>>(
+  tasks: T[],
   daysPerUnitOfWork: number,
   configuration?: ILowClericConfiguration,
-  startingFrom: Date = new Date()): Schedule => {
+  startingFrom: Date = new Date()): Schedule<T> => {
   const holidays = configuration?.holidays || [];
   const weekend = configuration?.weekend || [EnumDayOfTheWeek.Saturday, EnumDayOfTheWeek.Sunday];
   const discardParentEstimate = configuration?.discardParentEstimate !== undefined ? configuration.discardParentEstimate : false
-  const batchAssembler = new BatchAssembler({ discardParentEstimate: discardParentEstimate })
-  const leadTimeCalculator = new LeadTimeCalculator({ daysPerUnitOfWork })
-  const scheduleCalculator = new ScheduleCalculator({ holidays, weekend })
-  const taskScheduler = new TaskScheduler();
+  const batchAssembler = new BatchAssembler<T>({ discardParentEstimate: discardParentEstimate })
+  const leadTimeCalculator = new LeadTimeCalculator<T>({ daysPerUnitOfWork })
+  const scheduleCalculator = new ScheduleCalculator<T>({ holidays, weekend })
+  const taskScheduler = new TaskScheduler<T>();
   const batches = batchAssembler.assembleBatches(tasks);
   const leadTimes = leadTimeCalculator.calculateLeadTime(batches);
   const scheduledBatches = scheduleCalculator.calculateSchedule(leadTimes, startingFrom);

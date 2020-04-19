@@ -1,18 +1,19 @@
 import { IBatch } from "./IBatch";
 import { ILeadTime } from "./ILeadTime";
+import { ITask } from "./ITask";
 
 export interface ILeadTimeConfiguration {
   daysPerUnitOfWork: number
 }
 
-export class LeadTimeCalculator {
+export class LeadTimeCalculator<T extends ITask<T>> {
   constructor(private configuration: ILeadTimeConfiguration) { }
 
-  private calculateLeadTimeInDaysForBatch(batch: IBatch): number {
+  private calculateLeadTimeInDaysForBatch(batch: IBatch<T>): number {
     return batch.unitsOfWork * this.configuration.daysPerUnitOfWork;
   }
 
-  private calculateLeadTimeRec([batch, ...batches]: IBatch[], leadTimeToStartInDays: number = 0): ILeadTime[] {
+  private calculateLeadTimeRec([batch, ...batches]: IBatch<T>[], leadTimeToStartInDays: number = 0): ILeadTime<T>[] {
     if (batch === undefined) {
       return []
     } else {
@@ -25,5 +26,5 @@ export class LeadTimeCalculator {
     }
   }
 
-  calculateLeadTime = (batches: IBatch[]): ILeadTime[] => this.calculateLeadTimeRec(batches);
+  calculateLeadTime = (batches: IBatch<T>[]): ILeadTime<T>[] => this.calculateLeadTimeRec(batches);
 }
