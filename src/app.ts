@@ -3,6 +3,10 @@ import { ScheduleCalculator, IDayOfTheYear, EnumDayOfTheWeek } from "./ScheduleC
 import { ITask } from "./ITask";
 import { BatchAssembler } from "./BatchAssembler";
 import { TaskScheduler } from "./TaskScheduler";
+import { IScheduledTask } from "./IScheduledTask";
+import { IBatch } from "./IBatch";
+import { IScheduledBatch } from "./IScheduledBatch";
+import { ILeadTime } from "./ILeadTime";
 
 export interface ILowClericConfiguration {
   holidays?: IDayOfTheYear[],
@@ -10,11 +14,18 @@ export interface ILowClericConfiguration {
   discardParentEstimate?: boolean
 }
 
+export interface Schedule {
+  scheduledTasks: IScheduledTask[],
+  scheduledBatches: IScheduledBatch[],
+  leadTimes: ILeadTime[],
+  batches: IBatch[],
+}
+
 export const scheduleTasks = (
   tasks: ITask[],
   daysPerUnitOfWork: number,
   configuration?: ILowClericConfiguration,
-  startingFrom: Date = new Date()) => {
+  startingFrom: Date = new Date()): Schedule => {
   const holidays = configuration?.holidays || [];
   const weekend = configuration?.weekend || [EnumDayOfTheWeek.Saturday, EnumDayOfTheWeek.Sunday];
   const discardParentEstimate = configuration?.discardParentEstimate !== undefined ? configuration.discardParentEstimate : false
@@ -24,7 +35,12 @@ export const scheduleTasks = (
   const taskScheduler = new TaskScheduler();
   const batches = batchAssembler.assembleBatches(tasks);
   const leadTimes = leadTimeCalculator.calculateLeadTime(batches);
-  const schedule = scheduleCalculator.calculateSchedule(leadTimes, startingFrom);
-  const scheduledTasks = taskScheduler.scheduleTasks(tasks, schedule)
-  return scheduledTasks;
+  const scheduledBatches = scheduleCalculator.calculateSchedule(leadTimes, startingFrom);
+  const scheduledTasks = taskScheduler.scheduleTasks(tasks, scheduledBatches)
+  return {
+    scheduledTasks,
+    scheduledBatches,
+    leadTimes,
+    batches
+  };
 }
