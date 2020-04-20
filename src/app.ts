@@ -8,29 +8,21 @@ import { IBatch } from "./IBatch";
 import { IScheduledBatch } from "./IScheduledBatch";
 import { ILeadTime } from "./ILeadTime";
 
-export {
-  ITask,
-  IBatch,
-  IScheduledBatch,
-  ILeadTime,
-  IDayOfTheYear,
-  EnumDayOfTheWeek
-}
 
-export interface ILowClericConfiguration {
+interface ILowClericConfiguration {
   holidays?: IDayOfTheYear[],
   weekend?: EnumDayOfTheWeek[],
   discardParentEstimate?: boolean
 }
 
-export interface Schedule<T extends ITask<T>> {
+interface Schedule<T extends ITask<T>> {
   scheduledTasks: IScheduledTask<T>[],
   scheduledBatches: IScheduledBatch<T>[],
   leadTimes: ILeadTime<T>[],
   batches: IBatch<T>[],
 }
 
-export const scheduleTasks = <T extends ITask<T>>(
+const scheduleTasks = <T extends ITask<T>>(
   tasks: T[],
   daysPerUnitOfWork: number,
   configuration?: ILowClericConfiguration,
@@ -52,4 +44,16 @@ export const scheduleTasks = <T extends ITask<T>>(
     leadTimes,
     batches
   };
+}
+
+export {
+  ITask,
+  IBatch,
+  IScheduledBatch,
+  ILeadTime,
+  IDayOfTheYear,
+  EnumDayOfTheWeek,
+  ILowClericConfiguration,
+  Schedule,
+  scheduleTasks
 }
