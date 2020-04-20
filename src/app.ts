@@ -8,6 +8,15 @@ import { IBatch } from "./IBatch";
 import { IScheduledBatch } from "./IScheduledBatch";
 import { ILeadTime } from "./ILeadTime";
 
+export {
+  ITask,
+  IBatch,
+  IScheduledBatch,
+  ILeadTime,
+  IDayOfTheYear,
+  EnumDayOfTheWeek
+}
+
 export interface ILowClericConfiguration {
   holidays?: IDayOfTheYear[],
   weekend?: EnumDayOfTheWeek[],
