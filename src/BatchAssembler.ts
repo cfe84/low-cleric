@@ -23,9 +23,6 @@ export class BatchAssembler<T extends ITask<T>> {
         acc.estimateUncertaintyIndex = acc.estimateUncertainty / acc.unitsOfWork;
         acc.tasks.push(task);
       }
-      if (isParent) {
-        accumulator = this.assembleBatchesRec(task.subTasks as T[], accumulator, order);
-      }
     })
     return accumulator;
   }

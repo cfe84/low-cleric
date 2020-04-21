@@ -21,7 +21,7 @@ describe("Batch assembler", () => {
       unitsOfWork: 2,
       subTasks: [task2_1]
     }
-    const task3_1: Task = { unitsOfWork: 77 }
+    const task3_1: Task = { order: 25, unitsOfWork: 77 }
     const task3_2: Task = { order: 25, unitsOfWork: 3 }
     const epic3: Task = {
       order: 25,
@@ -31,7 +31,7 @@ describe("Batch assembler", () => {
     const batchAssembler = new BatchAssembler<Task>({});
 
     // when
-    const batches = batchAssembler.assembleBatches([epic1, epic2, epic3])
+    const batches = batchAssembler.assembleBatches([epic1, epic2, epic3, task1_1, task1_2, task1_3, task2_1, task3_1, task3_2])
 
     // then
     it("finds the right number of batchs", () => {
@@ -43,6 +43,8 @@ describe("Batch assembler", () => {
       should(batches[0].tasks).containDeep([task1_1, task1_2, epic1])
       should(batches[1].unitsOfWork).equal(3);
       should(batches[1].tasks).containDeep([task1_3])
+      should(batches[4].unitsOfWork).equal(80)
+      should(batches[4].tasks).containDeep([epic3, task3_1, task3_2])
     })
     it("should include units of work of epics by default", () => {
       should(batches[2].unitsOfWork).equal(2);
@@ -53,11 +55,6 @@ describe("Batch assembler", () => {
     it("calculates uncertainty", () => {
       should(batches[0].estimateUncertainty).equal(5)
       should(batches[0].estimateUncertaintyIndex).equal(.2)
-    })
-    it("defaults to parent task order if none is specified", () => {
-      should(batches[4].unitsOfWork).equal(80)
-      should(batches[4].tasks).containDeep([epic3, task3_1, task3_2])
-
     })
   });
 
@@ -73,7 +70,7 @@ describe("Batch assembler", () => {
     const batchAssembler = new BatchAssembler<Task>({ discardParentEstimate: true });
 
     // when
-    const batches = batchAssembler.assembleBatches([epic1])
+    const batches = batchAssembler.assembleBatches([epic1, task1_2, task1_1])
 
     // then
     it("should discard parent estimate", () => {
