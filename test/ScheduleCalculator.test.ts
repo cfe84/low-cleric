@@ -10,26 +10,31 @@ describe("Schedule", () => {
   // given
   const batch1: IBatch<Task> = { unitsOfWork: 1, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
   const leadTime1: ILeadTime<Task> = {
+    cumulatedConfidenceRatio: 1,
     leadTimeToStartInDays: BracketUtils.createNumberBracket(0, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(5, 0), batch: batch1
   }
   const batch2: IBatch<Task> = { unitsOfWork: 2, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
   const leadTime2: ILeadTime<Task> = {
+    cumulatedConfidenceRatio: 1,
     leadTimeToStartInDays: BracketUtils.createNumberBracket(5, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(10, 0), batch: batch2
   }
   const batch3: IBatch<Task> = { unitsOfWork: 3, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
   const leadTime3: ILeadTime<Task> = {
+    cumulatedConfidenceRatio: 1,
     leadTimeToStartInDays: BracketUtils.createNumberBracket(10, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(12, 0), batch: batch3
   }
   const batch4: IBatch<Task> = { unitsOfWork: 3, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
   const leadTime4: ILeadTime<Task> = {
+    cumulatedConfidenceRatio: 1,
     leadTimeToStartInDays: BracketUtils.createNumberBracket(12, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(20, 0), batch: batch4
   }
   const batch5: IBatch<Task> = { unitsOfWork: .1, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
   const leadTime5: ILeadTime<Task> = {
+    cumulatedConfidenceRatio: 1,
     leadTimeToStartInDays: BracketUtils.createNumberBracket(20, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(20.1, 0), batch: batch5
   }

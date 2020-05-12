@@ -52,9 +52,13 @@ describe("Batch assembler", () => {
       should(batches[3].unitsOfWork).equal(4);
       should(batches[3].tasks).containDeep([task2_1])
     })
-    it("calculates uncertainty", () => {
+    it("calculates confidence", () => {
       should(batches[0].uncertaintyInDays).equal(2.5)
       should(batches[0].estimateConfidenceRatio).equal(.9)
+    })
+    it("defaults confidence to 1", () => {
+      should(batches[1].uncertaintyInDays).equal(0)
+      should(batches[1].estimateConfidenceRatio).equal(1)
     })
   });
 

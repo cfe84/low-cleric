@@ -30,14 +30,17 @@ describe("Task scheduler", () => {
   const batch3: IBatch<Task> = { tasks: [task2_1], unitsOfWork: 4, estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
 
   const leadTime1: ILeadTime<Task> = {
+    cumulatedConfidenceRatio: 1,
     batch: batch1, leadTimeToStartInDays: BracketUtils.createNumberBracket(0, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(25, 0)
   }
   const leadTime2: ILeadTime<Task> = {
+    cumulatedConfidenceRatio: 1,
     batch: batch2, leadTimeToStartInDays: BracketUtils.createNumberBracket(25, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(32, 0)
   }
   const leadTime3: ILeadTime<Task> = {
+    cumulatedConfidenceRatio: 1,
     batch: batch3, leadTimeToStartInDays: BracketUtils.createNumberBracket(32, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(36, 0)
   }

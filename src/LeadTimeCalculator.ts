@@ -20,18 +20,23 @@ export class LeadTimeCalculator<T extends ITask<T>> {
     }
   }
 
-  private calculateLeadTimeRec([batch, ...batches]: IBatch<T>[], leadTimeToStartInDays: IBracket<number>): ILeadTime<T>[] {
+  private calculateLeadTimeRec([batch, ...batches]: IBatch<T>[],
+    leadTimeToStartInDays: IBracket<number>,
+    cumulatedUncertainty: number): ILeadTime<T>[] {
     if (batch === undefined) {
       return []
     } else {
       const leadTimeToFinishInDays = this.calculateLeadTimeInDaysForBatch(batch, leadTimeToStartInDays);
+      cumulatedUncertainty += batch.uncertaintyInDays
       return [{
+        cumulatedConfidenceRatio: 1 - cumulatedUncertainty / leadTimeToFinishInDays.calculated,
         batch,
         leadTimeToStartInDays,
         leadTimeToFinishInDays
-      }].concat(this.calculateLeadTimeRec(batches, leadTimeToFinishInDays))
+      }].concat(this.calculateLeadTimeRec(batches, leadTimeToFinishInDays, cumulatedUncertainty))
     }
   }
 
-  calculateLeadTime = (batches: IBatch<T>[]): ILeadTime<T>[] => this.calculateLeadTimeRec(batches, BracketUtils.createNumberBracket(0, 0));
+  calculateLeadTime = (batches: IBatch<T>[]): ILeadTime<T>[] =>
+    this.calculateLeadTimeRec(batches, BracketUtils.createNumberBracket(0, 0), 0);
 }

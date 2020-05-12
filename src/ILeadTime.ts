@@ -5,5 +5,6 @@ import { IBracket } from "./app";
 export interface ILeadTime<T extends ITask<T>> {
   batch: IBatch<T>,
   leadTimeToStartInDays: IBracket<number>,
-  leadTimeToFinishInDays: IBracket<number>
+  leadTimeToFinishInDays: IBracket<number>,
+  cumulatedConfidenceRatio: number
 }
