@@ -13,10 +13,10 @@ export class TaskScheduler<T extends ITask<T>> {
       let batch = this.getTaskBatch(task, scheduledBatches)
       if (isParent) {
         const subtasks = this.scheduleTasks(task.subTasks as T[], scheduledBatches);
-        const firstTask = subtasks.sort((a, b) => a.leadTimeToStartInDays - b.leadTimeToStartInDays)[0];
-        const lastTask = subtasks.sort((a, b) => b.leadTimeToFinishInDays - a.leadTimeToFinishInDays)[0];
-        const batchTaskIsBeforeFirst = batch && firstTask.leadTimeToStartInDays > batch?.leadTime.leadTimeToStartInDays.calculated;
-        const batchTaskIsAfterLast = batch && lastTask.leadTimeToFinishInDays < batch.leadTime.leadTimeToFinishInDays.calculated;
+        const firstTask = subtasks.sort((a, b) => a.leadTimeToStartInDays.calculated - b.leadTimeToStartInDays.calculated)[0];
+        const lastTask = subtasks.sort((a, b) => b.leadTimeToFinishInDays.calculated - a.leadTimeToFinishInDays.calculated)[0];
+        const batchTaskIsBeforeFirst = batch && firstTask.leadTimeToStartInDays.calculated > batch?.leadTime.leadTimeToStartInDays.calculated;
+        const batchTaskIsAfterLast = batch && lastTask.leadTimeToFinishInDays.calculated < batch.leadTime.leadTimeToFinishInDays.calculated;
         return {
           task,
           startDate: batchTaskIsBeforeFirst ? batch?.scheduledStartDate : firstTask.startDate,
@@ -28,10 +28,10 @@ export class TaskScheduler<T extends ITask<T>> {
       } else {
         return {
           task,
-          finishDate: batch?.scheduledFinishDate.calculated,
-          startDate: batch?.scheduledStartDate.calculated,
-          leadTimeToFinishInDays: batch?.leadTime.leadTimeToFinishInDays.calculated,
-          leadTimeToStartInDays: batch?.leadTime.leadTimeToStartInDays.calculated
+          finishDate: batch?.scheduledFinishDate,
+          startDate: batch?.scheduledStartDate,
+          leadTimeToFinishInDays: batch?.leadTime.leadTimeToFinishInDays,
+          leadTimeToStartInDays: batch?.leadTime.leadTimeToStartInDays
         } as IScheduledTask<T>
       }
     });
