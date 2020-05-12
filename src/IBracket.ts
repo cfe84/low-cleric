@@ -10,4 +10,16 @@ export class BracketUtils {
     maximum: days + variation,
     minimum: days - variation
   })
+
+  public static createDateBracket = (date: Date, variationInDays: number): IBracket<Date> => {
+    const maximum = new Date(date);
+    const minimum = new Date(date);
+    maximum.setDate(maximum.getDate() + variationInDays);
+    minimum.setDate(minimum.getDate() - variationInDays);
+    return {
+      calculated: date,
+      maximum,
+      minimum
+    }
+  }
 }

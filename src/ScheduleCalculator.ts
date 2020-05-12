@@ -1,6 +1,7 @@
 import { ILeadTime } from "./ILeadTime";
 import { IScheduledBatch } from "./IScheduledBatch";
 import { ITask } from "./ITask";
+import { IBracket, BracketUtils } from "./IBracket";
 
 export enum EnumDayOfTheWeek {
   Sunday = 0,
@@ -61,13 +62,26 @@ export class ScheduleCalculator<T extends ITask<T>> {
     return res;
   }
 
-  calculateSchedule([leadTime, ...leadtimes]: ILeadTime<T>[], startingFrom: Date = new Date()): IScheduledBatch<T>[] {
+  private calculateBracketDate(from: IBracket<Date>, intervalInDays: IBracket<number>): IBracket<Date> {
+    return {
+      calculated: this.calculateIntervalDate(from.calculated, intervalInDays.calculated),
+      maximum: this.calculateIntervalDate(from.maximum, intervalInDays.maximum),
+      minimum: this.calculateIntervalDate(from.minimum, intervalInDays.minimum)
+    }
+  }
+
+  calculateSchedule([leadTime, ...leadtimes]: ILeadTime<T>[],
+    startingFrom: IBracket<Date> = BracketUtils.createDateBracket(new Date(), 0)): IScheduledBatch<T>[] {
     if (leadTime === undefined) {
       return []
     } else {
-      const scheduledStartDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToStartInDays.calculated);
-      const scheduledFinishDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToFinishInDays.calculated);
-      const scheduledBatch: IScheduledBatch<T> = { batch: leadTime.batch, leadTime, scheduledStartDate, scheduledFinishDate };
+      const scheduledStartDate = this.calculateBracketDate(startingFrom, leadTime.leadTimeToStartInDays);
+      const scheduledFinishDate = this.calculateBracketDate(startingFrom, leadTime.leadTimeToFinishInDays);
+      const scheduledBatch: IScheduledBatch<T> = {
+        batch: leadTime.batch, leadTime,
+        scheduledStartDate,
+        scheduledFinishDate
+      };
       return [scheduledBatch]
         .concat(this.calculateSchedule(leadtimes, startingFrom))
     }

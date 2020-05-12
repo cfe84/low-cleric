@@ -28,8 +28,8 @@ export class TaskScheduler<T extends ITask<T>> {
       } else {
         return {
           task,
-          finishDate: batch?.scheduledFinishDate,
-          startDate: batch?.scheduledStartDate,
+          finishDate: batch?.scheduledFinishDate.calculated,
+          startDate: batch?.scheduledStartDate.calculated,
           leadTimeToFinishInDays: batch?.leadTime.leadTimeToFinishInDays.calculated,
           leadTimeToStartInDays: batch?.leadTime.leadTimeToStartInDays.calculated
         } as IScheduledTask<T>

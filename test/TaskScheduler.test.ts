@@ -45,9 +45,21 @@ describe("Task scheduler", () => {
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(36, 0)
   }
 
-  const scheduledBatch1: IScheduledBatch<Task> = { batch: batch1, leadTime: leadTime1, scheduledStartDate: new Date(2020, 3, 1, 1), scheduledFinishDate: new Date(2020, 3, 26, 1) }
-  const scheduledBatch2: IScheduledBatch<Task> = { batch: batch2, leadTime: leadTime2, scheduledStartDate: new Date(2020, 3, 26, 1), scheduledFinishDate: new Date(2020, 4, 3, 1) }
-  const scheduledBatch3: IScheduledBatch<Task> = { batch: batch3, leadTime: leadTime3, scheduledStartDate: new Date(2020, 4, 3, 1), scheduledFinishDate: new Date(2020, 4, 7, 1) }
+  const scheduledBatch1: IScheduledBatch<Task> = {
+    batch: batch1, leadTime: leadTime1,
+    scheduledStartDate: BracketUtils.createDateBracket(new Date(2020, 3, 1, 1), 0),
+    scheduledFinishDate: BracketUtils.createDateBracket(new Date(2020, 3, 26, 1), 0)
+  }
+  const scheduledBatch2: IScheduledBatch<Task> = {
+    batch: batch2, leadTime: leadTime2,
+    scheduledStartDate: BracketUtils.createDateBracket(new Date(2020, 3, 26, 1), 0),
+    scheduledFinishDate: BracketUtils.createDateBracket(new Date(2020, 4, 3, 1), 0)
+  }
+  const scheduledBatch3: IScheduledBatch<Task> = {
+    batch: batch3, leadTime: leadTime3,
+    scheduledStartDate: BracketUtils.createDateBracket(new Date(2020, 4, 3, 1), 0),
+    scheduledFinishDate: BracketUtils.createDateBracket(new Date(2020, 4, 7, 1), 0)
+  }
 
   const taskScheduler = new TaskScheduler<Task>();
   const tasks = [epic1, task3, epic2, epic4, task1_1, task1_2, task1_3, task2_1]
@@ -62,30 +74,30 @@ describe("Task scheduler", () => {
   })
   it("Handles tasks with children", () => {
     should(scheduledTasks[0].task).eql(epic1);
-    should(scheduledTasks[0].startDate).eql(scheduledBatch1.scheduledStartDate);
-    should(scheduledTasks[0].finishDate).eql(scheduledBatch2.scheduledFinishDate);
+    should(scheduledTasks[0].startDate).eql(scheduledBatch1.scheduledStartDate.calculated);
+    should(scheduledTasks[0].finishDate).eql(scheduledBatch2.scheduledFinishDate.calculated);
     should(scheduledTasks[0].leadTimeToStartInDays).eql(leadTime1.leadTimeToStartInDays.calculated);
     should(scheduledTasks[0].leadTimeToFinishInDays).eql(leadTime2.leadTimeToFinishInDays.calculated);
     should(scheduledTasks[0].subtasks).have.lengthOf(3);
 
     should(scheduledTasks[2].task).eql(epic2);
-    should(scheduledTasks[2].startDate).eql(scheduledBatch3.scheduledStartDate);
-    should(scheduledTasks[2].finishDate).eql(scheduledBatch3.scheduledFinishDate);
+    should(scheduledTasks[2].startDate).eql(scheduledBatch3.scheduledStartDate.calculated);
+    should(scheduledTasks[2].finishDate).eql(scheduledBatch3.scheduledFinishDate.calculated);
     should(scheduledTasks[2].leadTimeToStartInDays).eql(leadTime3.leadTimeToStartInDays.calculated);
     should(scheduledTasks[2].leadTimeToFinishInDays).eql(leadTime3.leadTimeToFinishInDays.calculated);
     should(scheduledTasks[2].subtasks).have.lengthOf(1);
   })
   it("Gets simple tasks", () => {
     should(scheduledTasks[1].task).eql(task3);
-    should(scheduledTasks[1].startDate).eql(scheduledBatch2.scheduledStartDate);
-    should(scheduledTasks[1].finishDate).eql(scheduledBatch2.scheduledFinishDate);
+    should(scheduledTasks[1].startDate).eql(scheduledBatch2.scheduledStartDate.calculated);
+    should(scheduledTasks[1].finishDate).eql(scheduledBatch2.scheduledFinishDate.calculated);
     should(scheduledTasks[1].leadTimeToStartInDays).eql(leadTime2.leadTimeToStartInDays.calculated);
     should(scheduledTasks[1].leadTimeToFinishInDays).eql(leadTime2.leadTimeToFinishInDays.calculated);
   })
   it("Handles tasks with two levels of children", () => {
     should(scheduledTasks[3].task).eql(epic4);
-    should(scheduledTasks[3].startDate).eql(scheduledBatch2.scheduledStartDate);
-    should(scheduledTasks[3].finishDate).eql(scheduledBatch3.scheduledFinishDate);
+    should(scheduledTasks[3].startDate).eql(scheduledBatch2.scheduledStartDate.calculated);
+    should(scheduledTasks[3].finishDate).eql(scheduledBatch3.scheduledFinishDate.calculated);
     should(scheduledTasks[3].leadTimeToStartInDays).eql(leadTime2.leadTimeToStartInDays.calculated);
     should(scheduledTasks[3].leadTimeToFinishInDays).eql(leadTime3.leadTimeToFinishInDays.calculated);
     should(scheduledTasks[3].subtasks).have.lengthOf(2);

@@ -7,7 +7,7 @@ import { IScheduledTask } from "./IScheduledTask";
 import { IBatch } from "./IBatch";
 import { IScheduledBatch } from "./IScheduledBatch";
 import { ILeadTime } from "./ILeadTime";
-import { IBracket } from "./IBracket";
+import { IBracket, BracketUtils } from "./IBracket";
 
 
 interface ILowClericConfiguration {
@@ -37,7 +37,7 @@ const scheduleTasks = <T extends ITask<T>>(
   const taskScheduler = new TaskScheduler<T>();
   const batches = batchAssembler.assembleBatches(tasks);
   const leadTimes = leadTimeCalculator.calculateLeadTime(batches);
-  const scheduledBatches = scheduleCalculator.calculateSchedule(leadTimes, startingFrom);
+  const scheduledBatches = scheduleCalculator.calculateSchedule(leadTimes, BracketUtils.createDateBracket(startingFrom, 0));
   const scheduledTasks = taskScheduler.scheduleTasks(tasks, scheduledBatches)
   return {
     scheduledTasks,
