@@ -19,14 +19,14 @@ describe("Lead Time Calculator", () => {
 
     // then
     should(leadTime[0].batch).eql(batch1);
-    should(leadTime[0].leadTimeToStartInDays).eql(0);
-    should(leadTime[0].leadTimeToFinishInDays).eql(10);
+    should(leadTime[0].leadTimeToStartInDays.calculated).eql(0);
+    should(leadTime[0].leadTimeToFinishInDays.calculated).eql(10);
     should(leadTime[1].batch).eql(batch2);
-    should(leadTime[1].leadTimeToStartInDays).eql(10);
-    should(leadTime[1].leadTimeToFinishInDays).eql(30);
+    should(leadTime[1].leadTimeToStartInDays.calculated).eql(10);
+    should(leadTime[1].leadTimeToFinishInDays.calculated).eql(30);
     should(leadTime[2].batch).eql(batch3);
-    should(leadTime[2].leadTimeToStartInDays).eql(30);
-    should(leadTime[2].leadTimeToFinishInDays).eql(70);
+    should(leadTime[2].leadTimeToStartInDays.calculated).eql(30);
+    should(leadTime[2].leadTimeToFinishInDays.calculated).eql(70);
 
   })
 })

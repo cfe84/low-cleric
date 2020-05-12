@@ -1,6 +1,8 @@
 import { IBatch } from "./IBatch";
 import { ILeadTime } from "./ILeadTime";
 import { ITask } from "./ITask";
+import { IBracket } from "./app";
+import { BracketUtils } from "./IBracket";
 
 export interface ILeadTimeConfiguration {
   daysPerUnitOfWork: number
@@ -9,15 +11,20 @@ export interface ILeadTimeConfiguration {
 export class LeadTimeCalculator<T extends ITask<T>> {
   constructor(private configuration: ILeadTimeConfiguration) { }
 
-  private calculateLeadTimeInDaysForBatch(batch: IBatch<T>): number {
-    return batch.unitsOfWork * this.configuration.daysPerUnitOfWork;
+  private calculateLeadTimeInDaysForBatch(batch: IBatch<T>, leadTimeToStartInDays: IBracket<number>): IBracket<number> {
+    const calculated = batch.unitsOfWork * this.configuration.daysPerUnitOfWork + leadTimeToStartInDays.calculated;
+    return {
+      calculated,
+      maximum: calculated,
+      minimum: calculated
+    }
   }
 
-  private calculateLeadTimeRec([batch, ...batches]: IBatch<T>[], leadTimeToStartInDays: number = 0): ILeadTime<T>[] {
+  private calculateLeadTimeRec([batch, ...batches]: IBatch<T>[], leadTimeToStartInDays: IBracket<number>): ILeadTime<T>[] {
     if (batch === undefined) {
       return []
     } else {
-      const leadTimeToFinishInDays = this.calculateLeadTimeInDaysForBatch(batch) + leadTimeToStartInDays;
+      const leadTimeToFinishInDays = this.calculateLeadTimeInDaysForBatch(batch, leadTimeToStartInDays);
       return [{
         batch,
         leadTimeToStartInDays,
@@ -26,5 +33,5 @@ export class LeadTimeCalculator<T extends ITask<T>> {
     }
   }
 
-  calculateLeadTime = (batches: IBatch<T>[]): ILeadTime<T>[] => this.calculateLeadTimeRec(batches);
+  calculateLeadTime = (batches: IBatch<T>[]): ILeadTime<T>[] => this.calculateLeadTimeRec(batches, BracketUtils.createNumberBracket(0, 0));
 }

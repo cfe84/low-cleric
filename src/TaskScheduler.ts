@@ -15,8 +15,8 @@ export class TaskScheduler<T extends ITask<T>> {
         const subtasks = this.scheduleTasks(task.subTasks as T[], scheduledBatches);
         const firstTask = subtasks.sort((a, b) => a.leadTimeToStartInDays - b.leadTimeToStartInDays)[0];
         const lastTask = subtasks.sort((a, b) => b.leadTimeToFinishInDays - a.leadTimeToFinishInDays)[0];
-        const batchTaskIsBeforeFirst = batch && firstTask.leadTimeToStartInDays > batch?.leadTime.leadTimeToStartInDays;
-        const batchTaskIsAfterLast = batch && lastTask.leadTimeToFinishInDays < batch.leadTime.leadTimeToFinishInDays;
+        const batchTaskIsBeforeFirst = batch && firstTask.leadTimeToStartInDays > batch?.leadTime.leadTimeToStartInDays.calculated;
+        const batchTaskIsAfterLast = batch && lastTask.leadTimeToFinishInDays < batch.leadTime.leadTimeToFinishInDays.calculated;
         return {
           task,
           startDate: batchTaskIsBeforeFirst ? batch?.scheduledStartDate : firstTask.startDate,
@@ -30,8 +30,8 @@ export class TaskScheduler<T extends ITask<T>> {
           task,
           finishDate: batch?.scheduledFinishDate,
           startDate: batch?.scheduledStartDate,
-          leadTimeToFinishInDays: batch?.leadTime.leadTimeToFinishInDays,
-          leadTimeToStartInDays: batch?.leadTime.leadTimeToStartInDays
+          leadTimeToFinishInDays: batch?.leadTime.leadTimeToFinishInDays.calculated,
+          leadTimeToStartInDays: batch?.leadTime.leadTimeToStartInDays.calculated
         } as IScheduledTask<T>
       }
     });

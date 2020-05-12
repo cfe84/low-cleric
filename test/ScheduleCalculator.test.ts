@@ -3,20 +3,36 @@ import { ILeadTime } from "../src/ILeadTime"
 import { IBatch } from "../src/IBatch"
 import { ScheduleCalculator, EnumMonth } from "../src/ScheduleCalculator"
 import { ITask } from "../src/ITask";
+import { BracketUtils } from "../src/IBracket";
 
 interface Task extends ITask<Task> { }
 describe("Schedule", () => {
   // given
   const batch1: IBatch<Task> = { unitsOfWork: 1, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
-  const leadTime1: ILeadTime<Task> = { leadTimeToStartInDays: 0, leadTimeToFinishInDays: 5, batch: batch1 }
+  const leadTime1: ILeadTime<Task> = {
+    leadTimeToStartInDays: BracketUtils.createNumberBracket(0, 0),
+    leadTimeToFinishInDays: BracketUtils.createNumberBracket(5, 0), batch: batch1
+  }
   const batch2: IBatch<Task> = { unitsOfWork: 2, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
-  const leadTime2: ILeadTime<Task> = { leadTimeToStartInDays: 5, leadTimeToFinishInDays: 10, batch: batch2 }
+  const leadTime2: ILeadTime<Task> = {
+    leadTimeToStartInDays: BracketUtils.createNumberBracket(5, 0),
+    leadTimeToFinishInDays: BracketUtils.createNumberBracket(10, 0), batch: batch2
+  }
   const batch3: IBatch<Task> = { unitsOfWork: 3, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
-  const leadTime3: ILeadTime<Task> = { leadTimeToStartInDays: 10, leadTimeToFinishInDays: 12, batch: batch3 }
+  const leadTime3: ILeadTime<Task> = {
+    leadTimeToStartInDays: BracketUtils.createNumberBracket(10, 0),
+    leadTimeToFinishInDays: BracketUtils.createNumberBracket(12, 0), batch: batch3
+  }
   const batch4: IBatch<Task> = { unitsOfWork: 3, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
-  const leadTime4: ILeadTime<Task> = { leadTimeToStartInDays: 12, leadTimeToFinishInDays: 20, batch: batch4 }
+  const leadTime4: ILeadTime<Task> = {
+    leadTimeToStartInDays: BracketUtils.createNumberBracket(12, 0),
+    leadTimeToFinishInDays: BracketUtils.createNumberBracket(20, 0), batch: batch4
+  }
   const batch5: IBatch<Task> = { unitsOfWork: .1, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
-  const leadTime5: ILeadTime<Task> = { leadTimeToStartInDays: 20, leadTimeToFinishInDays: 20.1, batch: batch5 }
+  const leadTime5: ILeadTime<Task> = {
+    leadTimeToStartInDays: BracketUtils.createNumberBracket(20, 0),
+    leadTimeToFinishInDays: BracketUtils.createNumberBracket(20.1, 0), batch: batch5
+  }
   const calculator = new ScheduleCalculator<Task>({ holidays: [{ day: 4, month: EnumMonth.May }] })
 
   // when

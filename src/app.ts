@@ -7,6 +7,7 @@ import { IScheduledTask } from "./IScheduledTask";
 import { IBatch } from "./IBatch";
 import { IScheduledBatch } from "./IScheduledBatch";
 import { ILeadTime } from "./ILeadTime";
+import { IBracket } from "./IBracket";
 
 
 interface ILowClericConfiguration {
@@ -54,6 +55,7 @@ export {
   IDayOfTheYear,
   EnumDayOfTheWeek,
   ILowClericConfiguration,
+  IBracket,
   Schedule,
   scheduleTasks
 }

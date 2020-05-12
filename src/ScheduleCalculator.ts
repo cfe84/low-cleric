@@ -65,8 +65,8 @@ export class ScheduleCalculator<T extends ITask<T>> {
     if (leadTime === undefined) {
       return []
     } else {
-      const scheduledStartDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToStartInDays);
-      const scheduledFinishDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToFinishInDays);
+      const scheduledStartDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToStartInDays.calculated);
+      const scheduledFinishDate = this.calculateIntervalDate(startingFrom, leadTime.leadTimeToFinishInDays.calculated);
       const scheduledBatch: IScheduledBatch<T> = { batch: leadTime.batch, leadTime, scheduledStartDate, scheduledFinishDate };
       return [scheduledBatch]
         .concat(this.calculateSchedule(leadtimes, startingFrom))
