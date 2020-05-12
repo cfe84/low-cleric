@@ -28,7 +28,8 @@ describe("Batch assembler", () => {
       unitsOfWork: 0,
       subTasks: [task3_1, task3_2]
     }
-    const batchAssembler = new BatchAssembler<Task>({});
+    const batchAssembler = new BatchAssembler<Task>({
+    });
 
     // when
     const batches = batchAssembler.assembleBatches([epic1, epic2, epic3, task1_1, task1_2, task1_3, task2_1, task3_1, task3_2])
@@ -65,13 +66,16 @@ describe("Batch assembler", () => {
   context("Discard parent estimate", () => {
     // given
     const task1_1: Task = { order: 10, unitsOfWork: 10 }
-    const task1_2: Task = { order: 10, unitsOfWork: 15 }
+    const task1_2: Task = { order: 10, unitsOfWork: 15, estimateConfidenceRatio: 1 }
     const epic1: Task = {
       order: 5,
       unitsOfWork: 5,
       subTasks: [task1_1, task1_2]
     }
-    const batchAssembler = new BatchAssembler<Task>({ discardParentEstimate: true });
+    const batchAssembler = new BatchAssembler<Task>({
+      discardParentEstimate: true,
+      defaultConfidenceRatio: (10 - 1) / 10
+    });
 
     // when
     const batches = batchAssembler.assembleBatches([epic1, task1_2, task1_1])
@@ -81,6 +85,10 @@ describe("Batch assembler", () => {
       should(batches).have.length(1)
       should(batches[0].unitsOfWork).equal(25);
       should(batches[0].tasks).containDeep([task1_1, task1_2]);
+    })
+    it("defaults confidence to configured value", () => {
+      should(batches[0].uncertaintyInDays).be.approximately(1, 0.001)
+      should(batches[0].estimateConfidenceRatio).equal(1 - 1 / 25)
     })
   })
 })

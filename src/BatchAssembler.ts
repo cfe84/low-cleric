@@ -3,13 +3,20 @@ import { ITask } from "./ITask";
 
 export interface IBatchAssemblerConfiguration {
   discardParentEstimate?: boolean;
+  defaultConfidenceRatio?: number;
 }
 
 export class BatchAssembler<T extends ITask<T>> {
-  constructor(private configuration: IBatchAssemblerConfiguration) { }
+  private defaultConfidenceRatio: number = 1
+  constructor(private configuration: IBatchAssemblerConfiguration) {
+    if (configuration.defaultConfidenceRatio) {
+      this.defaultConfidenceRatio = configuration.defaultConfidenceRatio
+    }
+  }
 
-  private getConfidenceOrDefaultTo1 = (confidence: number | undefined): number =>
-    confidence === undefined ? 1 : confidence
+  private getConfidenceOrDefaultTo1(confidence: number | undefined): number {
+    return confidence === undefined ? this.defaultConfidenceRatio : confidence
+  }
 
   private assembleBatchesRec(tasks: T[], accumulator: IBatch<T>[], parentOrder: number): IBatch<T>[] {
     tasks.forEach((task) => {
