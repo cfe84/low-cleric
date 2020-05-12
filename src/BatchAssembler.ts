@@ -8,19 +8,22 @@ export interface IBatchAssemblerConfiguration {
 export class BatchAssembler<T extends ITask<T>> {
   constructor(private configuration: IBatchAssemblerConfiguration) { }
 
+  private getConfidenceOrDefaultTo1 = (confidence: number | undefined): number =>
+    confidence === undefined ? 1 : confidence
+
   private assembleBatchesRec(tasks: T[], accumulator: IBatch<T>[], parentOrder: number): IBatch<T>[] {
     tasks.forEach((task) => {
       const order = task.order !== undefined ? task.order : parentOrder
       const isParent = task.subTasks && task.subTasks.length;
       if (!isParent || !this.configuration.discardParentEstimate) {
         if (!accumulator[order]) {
-          accumulator[order] = { unitsOfWork: 0, tasks: [], estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
+          accumulator[order] = { unitsOfWork: 0, tasks: [], estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
         }
         const acc = accumulator[order]
         acc.unitsOfWork += task.unitsOfWork;
-        acc.estimateUncertainty = (task.estimateUncertainty || 0) * task.unitsOfWork
-          + (acc.estimateUncertainty || 0);
-        acc.estimateUncertaintyIndex = acc.estimateUncertainty / acc.unitsOfWork;
+        acc.uncertaintyInDays = (1 - this.getConfidenceOrDefaultTo1(task.estimateConfidenceRatio)) * task.unitsOfWork
+          + (acc.uncertaintyInDays || 0);
+        acc.estimateConfidenceRatio = (acc.unitsOfWork - acc.uncertaintyInDays) / acc.unitsOfWork;
         acc.tasks.push(task);
       }
     })

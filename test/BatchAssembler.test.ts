@@ -7,7 +7,7 @@ interface Task extends ITask<Task> { }
 describe("Batch assembler", () => {
   context("Default", () => {
     // given
-    const task1_1: Task = { order: 10, unitsOfWork: 10, estimateUncertainty: .5 }
+    const task1_1: Task = { order: 10, unitsOfWork: 10, estimateConfidenceRatio: .75 }
     const task1_2: Task = { order: 10, unitsOfWork: 15 }
     const task1_3: Task = { order: 15, unitsOfWork: 3 }
     const task2_1: Task = { order: 20, unitsOfWork: 4 }
@@ -53,8 +53,8 @@ describe("Batch assembler", () => {
       should(batches[3].tasks).containDeep([task2_1])
     })
     it("calculates uncertainty", () => {
-      should(batches[0].estimateUncertainty).equal(5)
-      should(batches[0].estimateUncertaintyIndex).equal(.2)
+      should(batches[0].uncertaintyInDays).equal(2.5)
+      should(batches[0].estimateConfidenceRatio).equal(.9)
     })
   });
 

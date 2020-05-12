@@ -17,9 +17,9 @@ describe("Task scheduler", () => {
   const task3: ITask<Task> = { order: 15, unitsOfWork: 4 }
   const epic4: ITask<Task> = { order: 30, unitsOfWork: 0, subTasks: [task3, epic2] }
 
-  const batch1: IBatch<Task> = { tasks: [task1_1, task1_2], unitsOfWork: 25, estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
-  const batch2: IBatch<Task> = { tasks: [task1_3, task3], unitsOfWork: 7, estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
-  const batch3: IBatch<Task> = { tasks: [task2_1], unitsOfWork: 4, estimateUncertaintyIndex: 0, estimateUncertainty: 0 }
+  const batch1: IBatch<Task> = { tasks: [task1_1, task1_2], unitsOfWork: 25, estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
+  const batch2: IBatch<Task> = { tasks: [task1_3, task3], unitsOfWork: 7, estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
+  const batch3: IBatch<Task> = { tasks: [task2_1], unitsOfWork: 4, estimateConfidenceRatio: 0, uncertaintyInDays: 0 }
 
   const leadTime1: ILeadTime<Task> = { batch: batch1, leadTimeToStartInDays: 0, leadTimeToFinishInDays: 25 }
   const leadTime2: ILeadTime<Task> = { batch: batch2, leadTimeToStartInDays: 25, leadTimeToFinishInDays: 32 }
