@@ -12,11 +12,14 @@ export class LeadTimeCalculator<T extends ITask<T>> {
   constructor(private configuration: ILeadTimeConfiguration) { }
 
   private calculateLeadTimeInDaysForBatch(batch: IBatch<T>, leadTimeToStartInDays: IBracket<number>): IBracket<number> {
-    const calculated = batch.unitsOfWork * this.configuration.daysPerUnitOfWork + leadTimeToStartInDays.calculated;
+    const work = batch.unitsOfWork * this.configuration.daysPerUnitOfWork
+    const calculated = work + leadTimeToStartInDays.calculated;
+    const minimum = work + leadTimeToStartInDays.minimum - batch.uncertaintyInDays;
+    const maximum = work + leadTimeToStartInDays.maximum + batch.uncertaintyInDays;
     return {
       calculated,
-      maximum: calculated,
-      minimum: calculated
+      maximum,
+      minimum
     }
   }
 
