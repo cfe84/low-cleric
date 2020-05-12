@@ -7,5 +7,6 @@ export interface IScheduledTask<T extends ITask<T>> {
   leadTimeToFinishInDays: IBracket<number>,
   startDate: IBracket<Date>,
   finishDate: IBracket<Date>,
-  subtasks?: IScheduledTask<T>[]
+  subtasks?: IScheduledTask<T>[],
+  confidenceRatio: number
 }

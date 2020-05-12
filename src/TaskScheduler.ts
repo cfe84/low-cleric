@@ -23,7 +23,8 @@ export class TaskScheduler<T extends ITask<T>> {
           leadTimeToStartInDays: batchTaskIsBeforeFirst ? batch?.leadTime.leadTimeToStartInDays : firstTask.leadTimeToStartInDays,
           finishDate: batchTaskIsAfterLast ? batch?.scheduledFinishDate : lastTask.finishDate,
           leadTimeToFinishInDays: batchTaskIsAfterLast ? batch?.leadTime.leadTimeToFinishInDays : lastTask.leadTimeToFinishInDays,
-          subtasks
+          subtasks,
+          confidenceRatio: batch?.batch.estimateConfidenceRatio
         } as IScheduledTask<T>
       } else {
         return {
@@ -31,7 +32,8 @@ export class TaskScheduler<T extends ITask<T>> {
           finishDate: batch?.scheduledFinishDate,
           startDate: batch?.scheduledStartDate,
           leadTimeToFinishInDays: batch?.leadTime.leadTimeToFinishInDays,
-          leadTimeToStartInDays: batch?.leadTime.leadTimeToStartInDays
+          leadTimeToStartInDays: batch?.leadTime.leadTimeToStartInDays,
+          confidenceRatio: batch?.batch.estimateConfidenceRatio
         } as IScheduledTask<T>
       }
     });
