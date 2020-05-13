@@ -20,7 +20,7 @@ describe("Task scheduler", () => {
   const task1_2: ITask<Task> = { order: 10, unitsOfWork: 15 }
   const task1_3: ITask<Task> = { order: 15, unitsOfWork: 3 }
   const epic1: ITask<Task> = { order: 0, unitsOfWork: 0, subTasks: [task1_1, task1_2, task1_3] }
-  const task2_1: ITask<Task> = { order: 20, unitsOfWork: 4 }
+  const task2_1: ITask<Task> = { order: 20, unitsOfWork: 4, estimateConfidenceRatio: .75 }
   const epic2: ITask<Task> = { order: 0, unitsOfWork: 0, subTasks: [task2_1] }
   const task3: ITask<Task> = { order: 15, unitsOfWork: 4 }
   const epic4: ITask<Task> = { order: 30, unitsOfWork: 0, subTasks: [task3, epic2] }
@@ -58,7 +58,7 @@ describe("Task scheduler", () => {
   const scheduledBatch3: IScheduledBatch<Task> = {
     batch: batch3, leadTime: leadTime3,
     scheduledStartDate: BracketUtils.createDateBracket(new Date(2020, 4, 3, 1), 0),
-    scheduledFinishDate: BracketUtils.createDateBracket(new Date(2020, 4, 7, 1), 0)
+    scheduledFinishDate: BracketUtils.createDateBracket(new Date(2020, 4, 7, 1), 0),
   }
 
   const taskScheduler = new TaskScheduler<Task>();

@@ -13,7 +13,8 @@ import { IBracket, BracketUtils } from "./IBracket";
 interface ILowClericConfiguration {
   holidays?: IDayOfTheYear[],
   weekend?: EnumDayOfTheWeek[],
-  discardParentEstimate?: boolean
+  discardParentEstimate?: boolean,
+  defaultConfidenceRatio?: number
 }
 
 interface Schedule<T extends ITask<T>> {
@@ -31,7 +32,7 @@ const scheduleTasks = <T extends ITask<T>>(
   const holidays = configuration?.holidays || [];
   const weekend = configuration?.weekend || [EnumDayOfTheWeek.Saturday, EnumDayOfTheWeek.Sunday];
   const discardParentEstimate = configuration?.discardParentEstimate !== undefined ? configuration.discardParentEstimate : false
-  const batchAssembler = new BatchAssembler<T>({ discardParentEstimate: discardParentEstimate })
+  const batchAssembler = new BatchAssembler<T>({ discardParentEstimate: discardParentEstimate, defaultConfidenceRatio: configuration?.defaultConfidenceRatio })
   const leadTimeCalculator = new LeadTimeCalculator<T>({ daysPerUnitOfWork })
   const scheduleCalculator = new ScheduleCalculator<T>({ holidays, weekend })
   const taskScheduler = new TaskScheduler<T>();
