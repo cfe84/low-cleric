@@ -1,7 +1,7 @@
 import should from "should";
 import { ILeadTime } from "../src/ILeadTime"
 import { IBatch } from "../src/IBatch"
-import { ScheduleCalculator, EnumMonth } from "../src/ScheduleCalculator"
+import { ScheduleCalculator } from "../src/ScheduleCalculator"
 import { ITask } from "../src/ITask";
 import { BracketUtils } from "../src/IBracket";
 
@@ -38,7 +38,8 @@ describe("Schedule", () => {
     leadTimeToStartInDays: BracketUtils.createNumberBracket(20, 0),
     leadTimeToFinishInDays: BracketUtils.createNumberBracket(20.1, 0), batch: batch5
   }
-  const calculator = new ScheduleCalculator<Task>({ holidays: [{ day: 4, month: EnumMonth.May }] })
+
+  const calculator = new ScheduleCalculator<Task>({ holidays: [new Date(2020, 4, 4), new Date(2019, 4, 1)] })
 
   // when
   const schedule = calculator.calculateSchedule([leadTime1, leadTime2, leadTime3, leadTime4, leadTime5],

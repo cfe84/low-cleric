@@ -13,29 +13,10 @@ export enum EnumDayOfTheWeek {
   Saturday = 6
 }
 
-export enum EnumMonth {
-  January = 0,
-  February = 1,
-  March = 2,
-  April = 3,
-  May = 4,
-  June = 5,
-  July = 6,
-  August = 7,
-  September = 8,
-  October = 9,
-  November = 10,
-  December = 11
-}
-
-export interface IDayOfTheYear {
-  month: EnumMonth,
-  day: number
-}
 
 export interface IScheduleConfiguration {
   weekend?: EnumDayOfTheWeek[],
-  holidays: IDayOfTheYear[]
+  holidays: Date[]
 }
 
 export class ScheduleCalculator<T extends ITask<T>> {
@@ -45,7 +26,11 @@ export class ScheduleCalculator<T extends ITask<T>> {
   }
 
   private isHoliday = (date: Date) =>
-    !!this.configuration.holidays.find((holiday) => date.getDate() === holiday.day && date.getMonth() === holiday.month)
+    !!this.configuration.holidays.find
+      ((holiday) =>
+        date.getDate() === holiday.getDate()
+        && date.getMonth() === holiday.getMonth()
+        && date.getFullYear() === holiday.getFullYear())
 
   private isWeekend = (date: Date) =>
     this.weekend.indexOf(date.getDay()) >= 0

@@ -1,5 +1,5 @@
 import { LeadTimeCalculator } from "./LeadTimeCalculator";
-import { ScheduleCalculator, IDayOfTheYear, EnumDayOfTheWeek } from "./ScheduleCalculator";
+import { ScheduleCalculator, EnumDayOfTheWeek } from "./ScheduleCalculator";
 import { ITask } from "./ITask";
 import { BatchAssembler } from "./BatchAssembler";
 import { TaskScheduler } from "./TaskScheduler";
@@ -11,7 +11,7 @@ import { IBracket, BracketUtils } from "./IBracket";
 
 
 interface ILowClericConfiguration {
-  holidays?: IDayOfTheYear[],
+  holidays?: Date[],
   weekend?: EnumDayOfTheWeek[],
   discardParentEstimate?: boolean,
   defaultConfidenceRatio?: number
@@ -53,7 +53,6 @@ export {
   IBatch,
   IScheduledBatch,
   ILeadTime,
-  IDayOfTheYear,
   EnumDayOfTheWeek,
   ILowClericConfiguration,
   IBracket,
